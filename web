@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>簡易抽獎器</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f0f2f5; }
+        #result { font-size: 2rem; margin-bottom: 20px; color: #ff4757; font-weight: bold; }
+        .draw-box { padding: 40px; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        button { padding: 10px 25px; font-size: 1.2rem; background: #1e90ff; color: white; border: none; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #3742fa; }
+        button:disabled { background: #ccc; }
+    </style>
+</head>
+<body>
+
+    <div id="result">準備好抽獎了嗎？</div>
+    
+    <div class="draw-box">
+        <button id="drawBtn">開始抽獎！</button>
+    </div>
+
+    <script>
+        const prizes = [
+            { name: "一等獎：MacBook Pro", weight: 1 },
+            { name: "二等獎：iPhone 15", weight: 5 },
+            { name: "三等獎：1000元禮券", weight: 15 },
+            { name: "普獎：參加獎貼圖", weight: 79 }
+        ];
+
+        const btn = document.getElementById('drawBtn');
+        const resultText = document.getElementById('result');
+
+        btn.addEventListener('click', () => {
+            btn.disabled = true;
+            resultText.innerText = "抽取中...";
+
+            // 模擬旋轉/等待動畫
+            setTimeout(() => {
+                const winner = getPrize();
+                resultText.innerText = `恭喜獲得：${winner.name}`;
+                btn.disabled = false;
+            }, 1500);
+        });
+
+        // 權重抽獎邏輯
+        function getPrize() {
+            const totalWeight = prizes.reduce((sum, p) => sum + p.weight, 0);
+            let random = Math.random() * totalWeight;
+            
+            for (const prize of prizes) {
+                if (random < prize.weight) return prize;
+                random -= prize.weight;
+            }
+        }
+    </script>
+</body>
+</html>
